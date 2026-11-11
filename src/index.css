@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color-scheme: light;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Native <dialog> modal scroll containment & backdrop styling */
+dialog:modal {
+  overscroll-behavior: contain;
+  margin: auto;
+  border: 1px solid #d5dbe6;
+  border-radius: 8px;
+  padding: 0;
+  background: #ffffff;
+  color: #0f172a;
+  max-width: min(560px, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  box-shadow: 0 20px 44px -12px rgba(15, 23, 42, 0.18);
+}
+
+dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0.42);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* Form validation after user interaction (:user-invalid + fallback) */
+.field-input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  background: #ffffff;
+  color: #0f172a;
+  transition: border-color 120ms ease;
+}
+
+.field-input:focus {
+  outline: 2px solid #1e40af;
+  outline-offset: 1px;
+  border-color: #1e40af;
+}
+
+.field-input:is(:user-invalid, .user-invalid-fallback) {
+  border-color: #b91c1c;
+  background-color: #fef2f2;
+}
+
+.field-error {
+  display: none;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #b91c1c;
+}
+
+.field-input:is(:user-invalid, .user-invalid-fallback) + .field-error {
+  display: block;
+}
+
+/* Visually hidden status region for screen reader announcements */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Responsive table container & sticky headers */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-inline-size: 100%;
+  max-block-size: min(540px, 68vh);
+  container-type: inline-size;
+}
+
+.ledger-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.ledger-table thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  background: #f1f3f7;
+}
+
+.ledger-table th[scope='col']:has(> button) {
+  padding: 0;
+}
+
+.ledger-table th[scope='col'] > button {
+  width: 100%;
+  min-height: 38px;
+  padding: 0.5rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  text-align: left;
+  color: #334155;
+}
+
+.ledger-table th[scope='col'][data-align='right'] > button {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.ledger-table th[aria-sort] > button {
+  color: #0f172a;
+}
+
+@container (width < 640px) {
+  .ledger-table,
+  .ledger-table thead,
+  .ledger-table tbody,
+  .ledger-table tr,
+  .ledger-table th,
+  .ledger-table td {
+    display: block;
+  }
+
+  .ledger-table thead {
+    display: none;
+  }
+
+  .ledger-table tbody tr {
+    border-bottom: 1px solid #e2e6ed;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .ledger-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem 0 !important;
+    border: 0 !important;
+    text-align: right;
+  }
+
+  .ledger-table tbody td::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    text-align: left;
+    margin-right: 0.75rem;
+  }
+}
+
+/* Isolated layout containment for complex chart & grid regions */
+.isolated-panel {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 340px;
+}
+
+@supports not (content-visibility: auto) {
+  .isolated-panel {
+    contain: layout style paint;
+  }
+}
+
+/* Compact range slider styling */
+input[type='range'].runway-range {
+  accent-color: #1e40af;
+  height: 4px;
+  cursor: pointer;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
